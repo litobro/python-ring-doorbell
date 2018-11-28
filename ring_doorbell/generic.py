@@ -85,7 +85,7 @@ class RingGeneric(object):
 
     def _get_health_attrs(self):
         """Return health attributes."""
-        if self.family == 'doorbots' or self.family == 'stickup_cams':
+        if self.family == 'doorbots' or self.family == 'stickup_cams' or self.family == 'base_stations':
             url = API_URI + HEALTH_DOORBELL_ENDPOINT.format(self.account_id)
         elif self.family == 'chimes':
             url = API_URI + HEALTH_CHIMES_ENDPOINT.format(self.account_id)

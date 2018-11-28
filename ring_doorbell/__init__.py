@@ -20,6 +20,7 @@ from ring_doorbell.const import (
 from ring_doorbell.doorbot import RingDoorBell
 from ring_doorbell.chime import RingChime
 from ring_doorbell.stickup_cam import RingStickUpCam
+from ring_doorbell.base_station import RingBaseStation
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -224,6 +225,7 @@ class Ring(object):
         devs['chimes'] = self.chimes
         devs['stickup_cams'] = self.stickup_cams
         devs['doorbells'] = self.doorbells
+        devs['base_stations'] = self.base_stations
         return devs
 
     def __devices(self, device_type):
@@ -251,6 +253,11 @@ class Ring(object):
                 for member in list((obj['description'] for obj in req)):
                     lst.append(RingDoorBell(self, member, shared=True))
 
+            if device_type == 'base_stations':
+                req = self.query(url).get('base_stations')
+                for member in list((obj['description'] for obj in req)):
+                    lst.append(RingBaseStation(self, member))
+
         except AttributeError:
             pass
         return lst
@@ -269,6 +276,11 @@ class Ring(object):
     def doorbells(self):
         """Return a list of RingDoorBell objects."""
         return self.__devices('doorbells')
+
+    @property
+    def base_stations(self):
+        """Return a list of RingBaseStation objects."""
+        return self.__devices('base_stations')
 
     def update(self):
         """Refreshes attributes for all linked devices."""
